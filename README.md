@@ -62,7 +62,7 @@ options:
   --raw, -r             Raw shell
 ```
 
-### Bind Shell
+### Linux Bind Shell
 
 ```
 $ python3 shellgen.py linux_bind --help
