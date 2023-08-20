@@ -211,7 +211,7 @@ def show_full_help(parser, subparsers):
     parser.print_help()  # Imprimir ayuda principal
     print("\n")
     for choice, sub_parser in subparsers.choices.items():
-        print(f"Subcomando '{choice}':")
+        print(f"Subcommand '{choice}':")
         sub_parser.print_help()
         print("\n")
 
