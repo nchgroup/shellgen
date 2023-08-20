@@ -15,10 +15,8 @@
 ### Help
 
 ```
-$ python3 shellgen.py
+$ python3 shellgen.py -h
 usage: shellgen.py [-h] {linux_rev,linux_bind,windows_rev,download_exec,php_shell} ...
-
-ShellGen - Shells Generator
 
 options:
   -h, --help            show this help message and exit
@@ -32,7 +30,7 @@ subcommands:
     php_shell           PHP shells
 
 
-Subcomando 'linux_rev':
+Subcommand 'linux_rev':
 usage: shellgen.py linux_rev [-h] [-s SHELLTYPE] -ip IPDST [-p PORTDST] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
@@ -49,7 +47,7 @@ options:
                         json_escape
 
 
-Subcomando 'linux_bind':
+Subcommand 'linux_bind':
 usage: shellgen.py linux_bind [-h] [-s SHELLTYPE] [-p PORTSRC] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
@@ -64,7 +62,7 @@ options:
                         json_escape
 
 
-Subcomando 'windows_rev':
+Subcommand 'windows_rev':
 usage: shellgen.py windows_rev [-h] -ip IPDST [-p PORTDST] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
@@ -79,7 +77,7 @@ options:
                         json_escape
 
 
-Subcomando 'download_exec':
+Subcommand 'download_exec':
 usage: shellgen.py download_exec [-h] -u URL [-f {msf,hex,b64}] [-r]
 
 options:
@@ -90,7 +88,7 @@ options:
   -r, --raw             Raw payload
 
 
-Subcomando 'php_shell':
+Subcommand 'php_shell':
 usage: shellgen.py php_shell [-h] [-m {request,get,post,REQUEST,GET,POST}] [-p PARAMETER] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
