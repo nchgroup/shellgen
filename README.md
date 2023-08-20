@@ -34,7 +34,7 @@ subcommands:
 
 ```
 $ python3 shellgen.py linux_rev --help
-usage: shellgen.py linux_rev [-h] [--shell SHELLTYPE] --ip IPDST [--port PORTDST] [--raw]
+usage: shellgen.py linux_rev [-h] [--shell SHELLTYPE] --ip IPDST [--port PORTDST] [--raw] [--encode {b64,b64_utf16,url,durl,hex}]
 
 options:
   -h, --help            show this help message and exit
@@ -45,13 +45,15 @@ options:
   --port PORTDST, -p PORTDST
                         Port destination
   --raw, -r             Raw shell
+  --encode {b64,b64_utf16,url,durl,hex}, -e {b64,b64_utf16,url,durl,hex}
+                        Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal
 ```
 
 ### Windows Reverse Shell
 
 ```
-$ python3 shellgen.py windows_rev --help                      
-usage: shellgen.py windows_rev [-h] --ip IPDST [--port PORTDST] [--raw]
+$ python3 shellgen.py windows_rev --help
+usage: shellgen.py windows_rev [-h] --ip IPDST [--port PORTDST] [--raw] [--encode {b64,b64_utf16,url,durl,hex}]
 
 options:
   -h, --help            show this help message and exit
@@ -60,13 +62,15 @@ options:
   --port PORTDST, -p PORTDST
                         Port destination
   --raw, -r             Raw shell
+  --encode {b64,b64_utf16,url,durl,hex}, -e {b64,b64_utf16,url,durl,hex}
+                        Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal
 ```
 
 ### Linux Bind Shell
 
 ```
-$ python3 shellgen.py linux_bind --help
-usage: shellgen.py linux_bind [-h] [--shell SHELLTYPE] [--port PORTSRC] [--raw]
+$ python3 shellgen.py linux_bind --help 
+usage: shellgen.py linux_bind [-h] [--shell SHELLTYPE] [--port PORTSRC] [--raw] [--encode {b64,b64_utf16,url,durl,hex}]
 
 options:
   -h, --help            show this help message and exit
@@ -75,13 +79,15 @@ options:
   --port PORTSRC, -p PORTSRC
                         Port source
   --raw, -r             Raw shell
+  --encode {b64,b64_utf16,url,durl,hex}, -e {b64,b64_utf16,url,durl,hex}
+                        Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal
 ```
 
 ### PHP Web Shell
 
 ```
-$ python3 shellgen.py php_shell --help
-usage: shellgen.py php_shell [-h] [-m {request,get,post,REQUEST,GET,POST}] [-p PARAMETER] [--raw]
+$ python3 shellgen.py php_shell --help 
+usage: shellgen.py php_shell [-h] [-m {request,get,post,REQUEST,GET,POST}] [-p PARAMETER] [--raw] [--encode {b64,b64_utf16,url,durl,hex}]
 
 options:
   -h, --help            show this help message and exit
@@ -90,6 +96,8 @@ options:
   -p PARAMETER, --parameter PARAMETER
                         Parameter ex: ?<parameter>=whoami
   --raw, -r             Raw shell
+  --encode {b64,b64_utf16,url,durl,hex}, -e {b64,b64_utf16,url,durl,hex}
+                        Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal
 ```
 
 # Colaborators
