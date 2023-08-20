@@ -3,6 +3,8 @@
 
 
 import argparse
+import base64
+import urllib.parse
 
 
 def linuxRev(ipDst, portDst, shell):
@@ -142,6 +144,10 @@ def phpShells(shell):
     return [a, b, c, d, e, f]
 
 
+def helpEncode():
+    return "Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal"
+
+
 parser = argparse.ArgumentParser(description="ShellGen - Shells Generator")
 subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
 
@@ -164,6 +170,16 @@ linux_rev.add_argument(
 )
 linux_rev.add_argument("--raw", "-r", help="Raw shell", action="store_true", dest="raw")
 
+linux_rev.add_argument(
+    "--encode",
+    "-e",
+    dest="encode",
+    type=str,
+    help=helpEncode(),
+    choices=["b64", "b64_utf16", "url", "durl", "hex"],
+)
+
+
 windows_rev = subparsers.add_parser("windows_rev", help="Windows reverse shells")
 
 windows_rev.add_argument(
@@ -174,6 +190,15 @@ windows_rev.add_argument(
 )
 windows_rev.add_argument(
     "--raw", "-r", help="Raw shell", action="store_true", dest="raw"
+)
+
+windows_rev.add_argument(
+    "--encode",
+    "-e",
+    dest="encode",
+    type=str,
+    help=helpEncode(),
+    choices=["b64", "b64_utf16", "url", "durl", "hex"],
 )
 
 
@@ -192,6 +217,15 @@ linux_bind.add_argument(
 )
 linux_bind.add_argument(
     "--raw", "-r", help="Raw shell", action="store_true", dest="raw"
+)
+
+linux_bind.add_argument(
+    "--encode",
+    "-e",
+    dest="encode",
+    type=str,
+    help=helpEncode(),
+    choices=["b64", "b64_utf16", "url", "durl", "hex"],
 )
 
 php_shell = subparsers.add_parser("php_shell", help="PHP shells")
@@ -215,10 +249,32 @@ php_shell.add_argument(
 
 php_shell.add_argument("--raw", "-r", help="Raw shell", action="store_true", dest="raw")
 
+php_shell.add_argument(
+    "--encode",
+    "-e",
+    dest="encode",
+    type=str,
+    help=helpEncode(),
+    choices=["b64", "b64_utf16", "url", "durl", "hex"],
+)
+
+
 args = parser.parse_args()
 
 if args.subcommand == "linux_rev":
     for line in linuxRev(args.ipDst, args.portDst, args.shellType):
+        if args.encode:
+            match args.encode:
+                case "b64":
+                    line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
+                case "b64_utf16":
+                    line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
+                case "url":
+                    line = urllib.parse.quote(line)
+                case "durl":
+                    line = urllib.parse.quote(urllib.parse.quote(line))
+                case "hex":
+                    line = line.encode("utf-8").hex()
         if args.raw:
             print(line)
         else:
@@ -226,6 +282,18 @@ if args.subcommand == "linux_rev":
 
 if args.subcommand == "windows_rev":
     for line in windowsRev(args.ipDst, args.portDst):
+        if args.encode:
+            match args.encode:
+                case "b64":
+                    line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
+                case "b64_utf16":
+                    line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
+                case "url":
+                    line = urllib.parse.quote(line)
+                case "durl":
+                    line = urllib.parse.quote(urllib.parse.quote(line))
+                case "hex":
+                    line = line.encode("utf-8").hex()
         if args.raw:
             print(line)
         else:
@@ -233,6 +301,18 @@ if args.subcommand == "windows_rev":
 
 elif args.subcommand == "linux_bind":
     for line in linuxBind(args.portSrc, args.shellType):
+        if args.encode:
+            match args.encode:
+                case "b64":
+                    line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
+                case "b64_utf16":
+                    line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
+                case "url":
+                    line = urllib.parse.quote(line)
+                case "durl":
+                    line = urllib.parse.quote(urllib.parse.quote(line))
+                case "hex":
+                    line = line.encode("utf-8").hex()
         if args.raw:
             print(line)
         else:
@@ -241,6 +321,18 @@ elif args.subcommand == "linux_bind":
 elif args.subcommand == "php_shell":
     prepare_global = f'$_{args.method.upper()}["{args.parameter}"]'
     for line in phpShells(prepare_global):
+        if args.encode:
+            match args.encode:
+                case "b64":
+                    line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
+                case "b64_utf16":
+                    line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
+                case "url":
+                    line = urllib.parse.quote(line)
+                case "durl":
+                    line = urllib.parse.quote(urllib.parse.quote(line))
+                case "hex":
+                    line = line.encode("utf-8").hex()
         if args.raw:
             print(line)
         else:
