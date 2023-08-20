@@ -15,7 +15,7 @@
 ### Help
 
 ```
-$ python3 shellgen.py --help
+$ python3 shellgen.py
 usage: shellgen.py [-h] {linux_rev,linux_bind,windows_rev,download_exec,php_shell} ...
 
 ShellGen - Shells Generator
@@ -30,84 +30,68 @@ subcommands:
     windows_rev         Windows reverse shells
     download_exec       Windows shellcode generator for download and execute
     php_shell           PHP shells
-```
 
-### Linux Reverse Shell
 
-```
-$ python3 shellgen.py linux_rev --help
-usage: shellgen.py linux_rev [-h] [--shell SHELLTYPE] --ip IPDST [--port PORTDST] [--raw] [--encode {b64,b64_utf16,url,durl,hex,json}]
+Subcomando 'linux_rev':
+usage: shellgen.py linux_rev [-h] [-s SHELLTYPE] -ip IPDST [-p PORTDST] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
   -h, --help            show this help message and exit
-  --shell SHELLTYPE, -s SHELLTYPE
+  -s SHELLTYPE, --shell SHELLTYPE
                         Type of shell
-  --ip IPDST, -ip IPDST
+  -ip IPDST, --ip IPDST
                         IP destination
-  --port PORTDST, -p PORTDST
+  -p PORTDST, --port PORTDST
                         Port destination
-  --raw, -r             Raw payload
-  --encode {b64,b64_utf16,url,durl,hex,json}, -e {b64,b64_utf16,url,durl,hex,json}
+  -r, --raw             Raw payload
+  -e {b64,b64_utf16,url,durl,hex,json}, --encode {b64,b64_utf16,url,durl,hex,json}
                         Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal, json:
                         json_escape
-```
 
-### Linux Bind Shell
 
-```
-$ python3 shellgen.py linux_bind --help 
-usage: shellgen.py linux_bind [-h] [--shell SHELLTYPE] [--port PORTSRC] [--raw] [--encode {b64,b64_utf16,url,durl,hex,json}]
+Subcomando 'linux_bind':
+usage: shellgen.py linux_bind [-h] [-s SHELLTYPE] [-p PORTSRC] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
   -h, --help            show this help message and exit
-  --shell SHELLTYPE, -s SHELLTYPE
+  -s SHELLTYPE, --shell SHELLTYPE
                         Type of shell
-  --port PORTSRC, -p PORTSRC
+  -p PORTSRC, --port PORTSRC
                         Port source
-  --raw, -r             Raw payload
-  --encode {b64,b64_utf16,url,durl,hex,json}, -e {b64,b64_utf16,url,durl,hex,json}
+  -r, --raw             Raw payload
+  -e {b64,b64_utf16,url,durl,hex,json}, --encode {b64,b64_utf16,url,durl,hex,json}
                         Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal, json:
                         json_escape
-```
 
-### Windows Reverse Shell
 
-```
-$ python3 shellgen.py windows_rev --help
-usage: shellgen.py windows_rev [-h] --ip IPDST [--port PORTDST] [--raw] [--encode {b64,b64_utf16,url,durl,hex,json}]
+Subcomando 'windows_rev':
+usage: shellgen.py windows_rev [-h] -ip IPDST [-p PORTDST] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
   -h, --help            show this help message and exit
-  --ip IPDST, -ip IPDST
+  -ip IPDST, --ip IPDST
                         IP destination
-  --port PORTDST, -p PORTDST
+  -p PORTDST, --port PORTDST
                         Port destination
-  --raw, -r             Raw payload
-  --encode {b64,b64_utf16,url,durl,hex,json}, -e {b64,b64_utf16,url,durl,hex,json}
+  -r, --raw             Raw payload
+  -e {b64,b64_utf16,url,durl,hex,json}, --encode {b64,b64_utf16,url,durl,hex,json}
                         Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal, json:
                         json_escape
-```
 
-### Windows Download and Execute
 
-```
-$ python3 shellgen.py download_exec -h
-usage: shellgen.py download_exec [-h] --url URL [-f {msf,hex,b64}] [--raw]
+Subcomando 'download_exec':
+usage: shellgen.py download_exec [-h] -u URL [-f {msf,hex,b64}] [-r]
 
 options:
   -h, --help            show this help message and exit
-  --url URL, -u URL     Url dropper
+  -u URL, --url URL     Url dropper
   -f {msf,hex,b64}, --format {msf,hex,b64}
                         Type of format => msf: metasploit, hex: hexadecimal, b64: base64
-  --raw, -r             Raw payload
-```
+  -r, --raw             Raw payload
 
 
-### PHP Web Shell
-
-```
-$ python3 shellgen.py php_shell -h  
-usage: shellgen.py php_shell [-h] [-m {request,get,post,REQUEST,GET,POST}] [-p PARAMETER] [--raw] [--encode {b64,b64_utf16,url,durl,hex,json}]
+Subcomando 'php_shell':
+usage: shellgen.py php_shell [-h] [-m {request,get,post,REQUEST,GET,POST}] [-p PARAMETER] [-r] [-e {b64,b64_utf16,url,durl,hex,json}]
 
 options:
   -h, --help            show this help message and exit
@@ -115,8 +99,8 @@ options:
                         Type of method
   -p PARAMETER, --parameter PARAMETER
                         Parameter ex: ?<parameter>=whoami
-  --raw, -r             Raw payload
-  --encode {b64,b64_utf16,url,durl,hex,json}, -e {b64,b64_utf16,url,durl,hex,json}
+  -r, --raw             Raw payload
+  -e {b64,b64_utf16,url,durl,hex,json}, --encode {b64,b64_utf16,url,durl,hex,json}
                         Type of encoding => b64: base64, b64_utf16: base64_utf16, url: urlencode, durl: double_urlencode, hex: hexadecimal, json:
                         json_escape
 ```

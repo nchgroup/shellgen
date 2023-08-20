@@ -207,33 +207,51 @@ def helpFormat():
     return "Type of format => msf: metasploit, hex: hexadecimal, b64: base64"
 
 
-parser = argparse.ArgumentParser(description="ShellGen - Shells Generator")
-subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
+def show_full_help(parser, subparsers):
+    parser.print_help()  # Imprimir ayuda principal
+    print("\n")
+    for choice, sub_parser in subparsers.choices.items():
+        print(f"Subcomando '{choice}':")
+        sub_parser.print_help()
+        print("\n")
 
+
+parser = argparse.ArgumentParser(description="ShellGen - Shells Generator")
+
+parser = argparse.ArgumentParser(add_help=False)
+parser.add_argument(
+    "-h",
+    "--help",
+    action="store_true",
+    help="show this help message and exit",
+    dest="help",
+)
+
+subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
 
 linux_rev = subparsers.add_parser("linux_rev", help="Linux reverse shells")
 
 linux_rev.add_argument(
-    "--shell",
     "-s",
+    "--shell",
     type=str,
     help="Type of shell",
     default="/bin/bash",
     dest="shellType",
 )
 linux_rev.add_argument(
-    "--ip", "-ip", type=str, help="IP destination", required=True, dest="ipDst"
+    "-ip", "--ip", type=str, help="IP destination", required=True, dest="ipDst"
 )
 linux_rev.add_argument(
-    "--port", "-p", type=int, help="Port destination", default=4444, dest="portDst"
+    "-p", "--port", type=int, help="Port destination", default=4444, dest="portDst"
 )
 linux_rev.add_argument(
-    "--raw", "-r", help="Raw payload", action="store_true", dest="raw"
+    "-r", "--raw", help="Raw payload", action="store_true", dest="raw"
 )
 
 linux_rev.add_argument(
-    "--encode",
     "-e",
+    "--encode",
     dest="encode",
     type=str,
     help=helpEncode(),
@@ -243,23 +261,23 @@ linux_rev.add_argument(
 linux_bind = subparsers.add_parser("linux_bind", help="Linux bind shells")
 
 linux_bind.add_argument(
-    "--shell",
     "-s",
+    "--shell",
     type=str,
     help="Type of shell",
     default="/bin/bash",
     dest="shellType",
 )
 linux_bind.add_argument(
-    "--port", "-p", type=int, help="Port source", default=4444, dest="portSrc"
+    "-p", "--port", type=int, help="Port source", default=4444, dest="portSrc"
 )
 linux_bind.add_argument(
-    "--raw", "-r", help="Raw payload", action="store_true", dest="raw"
+    "-r", "--raw", help="Raw payload", action="store_true", dest="raw"
 )
 
 linux_bind.add_argument(
-    "--encode",
     "-e",
+    "--encode",
     dest="encode",
     type=str,
     help=helpEncode(),
@@ -270,18 +288,18 @@ linux_bind.add_argument(
 windows_rev = subparsers.add_parser("windows_rev", help="Windows reverse shells")
 
 windows_rev.add_argument(
-    "--ip", "-ip", type=str, help="IP destination", required=True, dest="ipDst"
+    "-ip", "--ip", type=str, help="IP destination", required=True, dest="ipDst"
 )
 windows_rev.add_argument(
-    "--port", "-p", type=int, help="Port destination", default=4444, dest="portDst"
+    "-p", "--port", type=int, help="Port destination", default=4444, dest="portDst"
 )
 windows_rev.add_argument(
-    "--raw", "-r", help="Raw payload", action="store_true", dest="raw"
+    "-r", "--raw", help="Raw payload", action="store_true", dest="raw"
 )
 
 windows_rev.add_argument(
-    "--encode",
     "-e",
+    "--encode",
     dest="encode",
     type=str,
     help=helpEncode(),
@@ -293,7 +311,7 @@ windows_download_exec = subparsers.add_parser(
 )
 
 windows_download_exec.add_argument(
-    "--url", "-u", type=str, help="Url dropper", required=True, dest="url"
+    "-u", "--url", type=str, help="Url dropper", required=True, dest="url"
 )
 
 windows_download_exec.add_argument(
@@ -307,7 +325,7 @@ windows_download_exec.add_argument(
 )
 
 windows_download_exec.add_argument(
-    "--raw", "-r", help="Raw payload", action="store_true", dest="raw"
+    "-r", "--raw", help="Raw payload", action="store_true", dest="raw"
 )
 
 php_shell = subparsers.add_parser("php_shell", help="PHP shells")
@@ -331,12 +349,12 @@ php_shell.add_argument(
 )
 
 php_shell.add_argument(
-    "--raw", "-r", help="Raw payload", action="store_true", dest="raw"
+    "-r", "--raw", help="Raw payload", action="store_true", dest="raw"
 )
 
 php_shell.add_argument(
-    "--encode",
     "-e",
+    "--encode",
     dest="encode",
     type=str,
     help=helpEncode(),
@@ -345,109 +363,134 @@ php_shell.add_argument(
 
 
 args = parser.parse_args()
-match args.subcommand:
-    case "linux_rev":
-        for line in linuxRev(args.ipDst, args.portDst, args.shellType):
-            if args.encode:
-                match args.encode:
-                    case "b64":
-                        line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
-                    case "b64_utf16":
-                        line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
-                    case "url":
-                        line = urllib.parse.quote(line)
-                    case "durl":
-                        line = urllib.parse.quote(urllib.parse.quote(line))
-                    case "hex":
-                        line = line.encode("utf-8").hex()
-                    case "json":
-                        line = json.dumps(line)
-            if args.raw:
-                print(line)
-            else:
-                print("[\033[1;34m*\033[0m] " + line)
-    case "linux_bind":
-        for line in linuxBind(args.portSrc, args.shellType):
-            if args.encode:
-                match args.encode:
-                    case "b64":
-                        line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
-                    case "b64_utf16":
-                        line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
-                    case "url":
-                        line = urllib.parse.quote(line)
-                    case "durl":
-                        line = urllib.parse.quote(urllib.parse.quote(line))
-                    case "hex":
-                        line = line.encode("utf-8").hex()
-                    case "json":
-                        line = json.dumps(line)
+
+if args.help:
+    show_full_help(parser, subparsers)
+
+else:
+    match args.subcommand:
+        case None:
+            show_full_help(parser, subparsers)
+
+        case "linux_rev":
+            for line in linuxRev(args.ipDst, args.portDst, args.shellType):
+                if args.encode:
+                    match args.encode:
+                        case "b64":
+                            line = base64.b64encode(line.encode("utf-8")).decode(
+                                "utf-8"
+                            )
+                        case "b64_utf16":
+                            line = base64.b64encode(line.encode("utf-16")).decode(
+                                "utf-8"
+                            )
+                        case "url":
+                            line = urllib.parse.quote(line)
+                        case "durl":
+                            line = urllib.parse.quote(urllib.parse.quote(line))
+                        case "hex":
+                            line = line.encode("utf-8").hex()
+                        case "json":
+                            line = json.dumps(line)
+                if args.raw:
+                    print(line)
+                else:
+                    print("[\033[1;34m*\033[0m] " + line)
+
+        case "linux_bind":
+            for line in linuxBind(args.portSrc, args.shellType):
+                if args.encode:
+                    match args.encode:
+                        case "b64":
+                            line = base64.b64encode(line.encode("utf-8")).decode(
+                                "utf-8"
+                            )
+                        case "b64_utf16":
+                            line = base64.b64encode(line.encode("utf-16")).decode(
+                                "utf-8"
+                            )
+                        case "url":
+                            line = urllib.parse.quote(line)
+                        case "durl":
+                            line = urllib.parse.quote(urllib.parse.quote(line))
+                        case "hex":
+                            line = line.encode("utf-8").hex()
+                        case "json":
+                            line = json.dumps(line)
+                if args.raw:
+                    print(line)
+                else:
+                    print("[\033[1;34m*\033[0m] " + line)
+
+        case "windows_rev":
+            for line in windowsRev(args.ipDst, args.portDst):
+                if args.encode:
+                    match args.encode:
+                        case "b64":
+                            line = base64.b64encode(line.encode("utf-8")).decode(
+                                "utf-8"
+                            )
+                        case "b64_utf16":
+                            line = base64.b64encode(line.encode("utf-16")).decode(
+                                "utf-8"
+                            )
+                        case "url":
+                            line = urllib.parse.quote(line)
+                        case "durl":
+                            line = urllib.parse.quote(urllib.parse.quote(line))
+                        case "hex":
+                            line = line.encode("utf-8").hex()
+                        case "json":
+                            line = json.dumps(line)
+                if args.raw:
+                    print(line)
+                else:
+                    print("[\033[1;34m*\033[0m] " + line)
+
+        case "download_exec":
+            match args.format:
+                case "msf":
+                    print(
+                        "[\033[1;34m*\033[0m] Generating the payload shellcode metasploit format...\n"
+                    )
+                    line = generate_shellcode(args.url)[0]
+                case "hex":
+                    print(
+                        "[\033[1;34m*\033[0m] Generating the payload shellcode hexadecimal format...\n"
+                    )
+                    line = generate_shellcode(args.url)[1]
+                case "b64":
+                    print(
+                        "[\033[1;34m*\033[0m] Generating the payload shellcode base64 format...\n"
+                    )
+                    line = generate_shellcode(args.url)[2]
             if args.raw:
                 print(line)
             else:
                 print("[\033[1;34m*\033[0m] " + line)
 
-    case "windows_rev":
-        for line in windowsRev(args.ipDst, args.portDst):
-            if args.encode:
-                match args.encode:
-                    case "b64":
-                        line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
-                    case "b64_utf16":
-                        line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
-                    case "url":
-                        line = urllib.parse.quote(line)
-                    case "durl":
-                        line = urllib.parse.quote(urllib.parse.quote(line))
-                    case "hex":
-                        line = line.encode("utf-8").hex()
-                    case "json":
-                        line = json.dumps(line)
-            if args.raw:
-                print(line)
-            else:
-                print("[\033[1;34m*\033[0m] " + line)
-
-    case "download_exec":
-        match args.format:
-            case "msf":
-                print(
-                    "[\033[1;34m*\033[0m] Generating the payload shellcode metasploit format...\n"
-                )
-                line = generate_shellcode(args.url)[0]
-            case "hex":
-                print(
-                    "[\033[1;34m*\033[0m] Generating the payload shellcode hexadecimal format...\n"
-                )
-                line = generate_shellcode(args.url)[1]
-            case "b64":
-                print(
-                    "[\033[1;34m*\033[0m] Generating the payload shellcode base64 format...\n"
-                )
-                line = generate_shellcode(args.url)[2]
-        if args.raw:
-            print(line)
-        else:
-            print("[\033[1;34m*\033[0m] " + line)
-
-    case "php_shell":
-        prepare_global = f'$_{args.method.upper()}["{args.parameter}"]'
-        for line in phpShells(prepare_global):
-            if args.encode:
-                match args.encode:
-                    case "b64":
-                        line = base64.b64encode(line.encode("utf-8")).decode("utf-8")
-                    case "b64_utf16":
-                        line = base64.b64encode(line.encode("utf-16")).decode("utf-8")
-                    case "url":
-                        line = urllib.parse.quote(line)
-                    case "durl":
-                        line = urllib.parse.quote(urllib.parse.quote(line))
-                    case "hex":
-                        line = line.encode("utf-8").hex()
-                    case "json":
-                        line = json.dumps(line)
-            if args.raw:
-                print(line)
-            else:
-                print("[\033[1;34m*\033[0m] " + line)
+        case "php_shell":
+            prepare_global = f'$_{args.method.upper()}["{args.parameter}"]'
+            for line in phpShells(prepare_global):
+                if args.encode:
+                    match args.encode:
+                        case "b64":
+                            line = base64.b64encode(line.encode("utf-8")).decode(
+                                "utf-8"
+                            )
+                        case "b64_utf16":
+                            line = base64.b64encode(line.encode("utf-16")).decode(
+                                "utf-8"
+                            )
+                        case "url":
+                            line = urllib.parse.quote(line)
+                        case "durl":
+                            line = urllib.parse.quote(urllib.parse.quote(line))
+                        case "hex":
+                            line = line.encode("utf-8").hex()
+                        case "json":
+                            line = json.dumps(line)
+                if args.raw:
+                    print(line)
+                else:
+                    print("[\033[1;34m*\033[0m] " + line)
