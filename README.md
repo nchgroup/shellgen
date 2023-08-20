@@ -103,6 +103,9 @@ options:
                         json_escape
 ```
 
-# Colaborators
+# References
+* https://github.com/trustedsec/unicorn
 
+# Colaborators
+* Vay3t
 * https://github.com/elborikua
